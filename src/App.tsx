@@ -49,36 +49,8 @@ export default function App() {
     localStorage.setItem(STORAGE_KEY_TAB, tab);
   };
 
-  // 3. Admin mode state (checks ?admin=true parameter or state)
-  const [isAdmin, setIsAdmin] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('admin') === 'true';
-    }
-    return false;
-  });
-
-  // Listen for URL changes or popstate
-  useEffect(() => {
-    const checkAdminParam = () => {
-      const params = new URLSearchParams(window.location.search);
-      setIsAdmin(params.get('admin') === 'true');
-    };
-    window.addEventListener('popstate', checkAdminParam);
-    return () => window.removeEventListener('popstate', checkAdminParam);
-  }, []);
-
-  const handleToggleAdmin = () => {
-    const newAdminState = !isAdmin;
-    setIsAdmin(newAdminState);
-    const url = new URL(window.location.href);
-    if (newAdminState) {
-      url.searchParams.set('admin', 'true');
-    } else {
-      url.searchParams.delete('admin');
-    }
-    window.history.pushState({}, '', url.toString());
-  };
+  // 3. Admin mode state (enabled by default so user can edit and add achievements anytime)
+  const [isAdmin, setIsAdmin] = useState<boolean>(true);
 
   // 3. Profile state (synced with Firebase Firestore + Local Cache for instant load)
   const [profile, setProfile] = useState<ProfileInfo>(() => {
@@ -212,14 +184,7 @@ export default function App() {
     });
 
     try {
-      const exists = achievements.some((a) => a.id === itemToSave.id);
-      if (exists) {
-        await saveAchievementToFirestore(itemToSave);
-      } else {
-        const newItem = { ...itemToSave, order: 0 };
-        const reindexed = achievements.map((a) => ({ ...a, order: (a.order ?? 0) + 1 }));
-        await batchSaveAchievementsToFirestore([newItem, ...reindexed]);
-      }
+      await saveAchievementToFirestore(itemToSave);
     } catch (err) {
       console.error('Failed to save achievement to Firestore:', err);
     }

@@ -79,12 +79,29 @@ export function subscribeToProfile(
   );
 }
 
+// Helper to remove undefined properties before saving to Firestore
+function removeUndefined<T>(obj: T): T {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+  if (Array.isArray(obj)) {
+    return obj.map(removeUndefined) as unknown as T;
+  }
+  const cleaned: Record<string, any> = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (value !== undefined) {
+      cleaned[key] = typeof value === 'object' && value !== null ? removeUndefined(value) : value;
+    }
+  }
+  return cleaned as T;
+}
+
 // Helper to seed achievements if empty
 async function seedAchievementsIfEmpty() {
   const batch = writeBatch(db);
   sampleAchievements.forEach((item) => {
     const docRef = doc(db, ACHIEVEMENTS_COLLECTION, item.id);
-    batch.set(docRef, item);
+    batch.set(docRef, removeUndefined(item));
   });
   await batch.commit();
 }
@@ -92,7 +109,7 @@ async function seedAchievementsIfEmpty() {
 // 3. Save / Update achievement
 export async function saveAchievementToFirestore(item: Achievement) {
   const docRef = doc(db, ACHIEVEMENTS_COLLECTION, item.id);
-  await setDoc(docRef, item, { merge: true });
+  await setDoc(docRef, removeUndefined(item), { merge: true });
 }
 
 // 4. Batch save achievements (for reordering)
@@ -100,7 +117,7 @@ export async function batchSaveAchievementsToFirestore(items: Achievement[]) {
   const batch = writeBatch(db);
   items.forEach((item, index) => {
     const docRef = doc(db, ACHIEVEMENTS_COLLECTION, item.id);
-    batch.set(docRef, { ...item, order: index }, { merge: true });
+    batch.set(docRef, removeUndefined({ ...item, order: index }), { merge: true });
   });
   await batch.commit();
 }
@@ -114,5 +131,5 @@ export async function deleteAchievementFromFirestore(id: string) {
 // 6. Save Profile
 export async function saveProfileToFirestore(profileData: ProfileInfo) {
   const docRef = doc(db, PROFILE_COLLECTION, PROFILE_DOC_ID);
-  await setDoc(docRef, profileData, { merge: true });
+  await setDoc(docRef, removeUndefined(profileData), { merge: true });
 }
