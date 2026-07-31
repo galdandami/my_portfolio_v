@@ -49,8 +49,24 @@ export default function App() {
     localStorage.setItem(STORAGE_KEY_TAB, tab);
   };
 
-  // 3. Admin mode state (enabled by default so user can edit and add achievements anytime)
-  const [isAdmin, setIsAdmin] = useState<boolean>(true);
+  // 3. Admin mode state: active ONLY if URL query contains ?admin=true
+  const [isAdmin, setIsAdmin] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('admin') === 'true';
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const checkAdmin = () => {
+      const params = new URLSearchParams(window.location.search);
+      setIsAdmin(params.get('admin') === 'true');
+    };
+    checkAdmin();
+    window.addEventListener('popstate', checkAdmin);
+    return () => window.removeEventListener('popstate', checkAdmin);
+  }, []);
 
   // 3. Profile state (synced with Firebase Firestore + Local Cache for instant load)
   const [profile, setProfile] = useState<ProfileInfo>(() => {
