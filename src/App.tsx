@@ -174,9 +174,15 @@ export default function App() {
   const handleDeleteItem = async (id: string) => {
     const confirmMsg =
       lang === 'ru'
-        ? 'Вы уверены, что хотите удалить это достижение?'
-        : 'Are you sure you want to delete this achievement?';
+        ? 'Вы уверены, что хотите удалить эту запись?'
+        : 'Are you sure you want to delete this item?';
     if (window.confirm(confirmMsg)) {
+      setAchievements((prev) => {
+        const updated = prev.filter((item) => item.id !== id);
+        localStorage.setItem(STORAGE_KEY_ACHIEVEMENTS, JSON.stringify(updated));
+        return updated;
+      });
+
       try {
         await deleteAchievementFromFirestore(id);
       } catch (err) {
@@ -186,13 +192,31 @@ export default function App() {
   };
 
   const handleSaveAchievement = async (itemToSave: Achievement) => {
+    const itemType = itemToSave.type || 'project';
+    if (activeTab !== itemType) {
+      handleTabChange(itemType);
+    }
+
+    setAchievements((prev) => {
+      const exists = prev.some((a) => a.id === itemToSave.id);
+      let updatedList: Achievement[];
+      if (exists) {
+        updatedList = prev.map((a) => (a.id === itemToSave.id ? itemToSave : a));
+      } else {
+        const newItem = { ...itemToSave, order: 0 };
+        const reindexed = prev.map((a) => ({ ...a, order: (a.order ?? 0) + 1 }));
+        updatedList = [newItem, ...reindexed];
+      }
+      localStorage.setItem(STORAGE_KEY_ACHIEVEMENTS, JSON.stringify(updatedList));
+      return updatedList;
+    });
+
     try {
       const exists = achievements.some((a) => a.id === itemToSave.id);
       if (exists) {
         await saveAchievementToFirestore(itemToSave);
       } else {
         const newItem = { ...itemToSave, order: 0 };
-        // Shift existing order
         const reindexed = achievements.map((a) => ({ ...a, order: (a.order ?? 0) + 1 }));
         await batchSaveAchievementsToFirestore([newItem, ...reindexed]);
       }
@@ -212,6 +236,9 @@ export default function App() {
     newArr[targetIndex] = temp;
 
     const reindexed = newArr.map((item, idx) => ({ ...item, order: idx }));
+    setAchievements(reindexed);
+    localStorage.setItem(STORAGE_KEY_ACHIEVEMENTS, JSON.stringify(reindexed));
+
     try {
       await batchSaveAchievementsToFirestore(reindexed);
     } catch (err) {
@@ -221,6 +248,9 @@ export default function App() {
 
   // Reset or Load Sample Data
   const handleLoadSampleData = async () => {
+    setAchievements(sampleAchievements);
+    localStorage.setItem(STORAGE_KEY_ACHIEVEMENTS, JSON.stringify(sampleAchievements));
+
     try {
       await batchSaveAchievementsToFirestore(sampleAchievements);
     } catch (err) {
@@ -236,6 +266,9 @@ export default function App() {
           : 'Clear all achievements? List will become empty.'
       )
     ) {
+      setAchievements([]);
+      localStorage.setItem(STORAGE_KEY_ACHIEVEMENTS, JSON.stringify([]));
+
       try {
         await Promise.all(achievements.map((item) => deleteAchievementFromFirestore(item.id)));
       } catch (err) {

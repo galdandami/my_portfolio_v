@@ -5,13 +5,15 @@ import { Sparkles } from 'lucide-react';
 interface HeaderProps {
   lang: Language;
   onLanguageChange: (lang: Language) => void;
-  isAdmin?: boolean;
-  onToggleAdmin?: () => void;
+  isAdmin: boolean;
+  onToggleAdmin: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   lang,
   onLanguageChange,
+  isAdmin,
+  onToggleAdmin,
 }) => {
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-[#0B0B0C]/80 border-b border-white/5 transition-all">
@@ -37,6 +39,28 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Right side controls */}
         <div className="flex items-center gap-2 sm:gap-4 shrink-0">
           
+          {/* Admin Toggle Button */}
+          <button
+            onClick={onToggleAdmin}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 border flex items-center gap-1.5 ${
+              isAdmin
+                ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-[0_0_12px_rgba(245,158,11,0.2)]'
+                : 'bg-white/5 text-white/50 hover:text-white border-white/10'
+            }`}
+            title={
+              isAdmin
+                ? (lang === 'ru' ? 'Выйти из режима админа' : 'Exit Admin Mode')
+                : (lang === 'ru' ? 'Включить режим админа' : 'Enable Admin Mode')
+            }
+          >
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping inline-block" style={{ display: isAdmin ? 'inline-block' : 'none' }} />
+            <span>
+              {isAdmin
+                ? (lang === 'ru' ? '⚡ АДМИН' : '⚡ ADMIN')
+                : (lang === 'ru' ? 'АДМИН' : 'ADMIN')}
+            </span>
+          </button>
+
           {/* Language Selector */}
           <div className="flex bg-white/5 p-1 rounded-xl border border-white/10 text-xs font-semibold uppercase tracking-wider">
             <button
