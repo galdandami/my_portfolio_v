@@ -1,0 +1,74 @@
+{
+  "entities": {
+    "achievements": {
+      "title": "Achievements",
+      "description": "User portfolio achievements and projects",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "description": "Date string YYYY-MM-DD" },
+        "image": { "type": "string", "description": "Image URL or data URI" },
+        "order": { "type": "number", "description": "Display order" },
+        "linkUrl": { "type": "string", "description": "Optional link URL" },
+        "title": {
+          "type": "object",
+          "properties": {
+            "ru": { "type": "string" },
+            "en": { "type": "string" }
+          },
+          "required": ["ru", "en"]
+        },
+        "shortDesc": {
+          "type": "object",
+          "properties": {
+            "ru": { "type": "string" },
+            "en": { "type": "string" }
+          },
+          "required": ["ru", "en"]
+        },
+        "fullDesc": {
+          "type": "object",
+          "properties": {
+            "ru": { "type": "string" },
+            "en": { "type": "string" }
+          },
+          "required": ["ru", "en"]
+        }
+      },
+      "required": ["date", "title", "shortDesc", "fullDesc", "order"]
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Portfolio owner profile details",
+      "type": "object",
+      "properties": {
+        "avatarUrl": { "type": "string" },
+        "contactEmail": { "type": "string" },
+        "name": {
+          "type": "object",
+          "properties": {
+            "ru": { "type": "string" },
+            "en": { "type": "string" }
+          },
+          "required": ["ru", "en"]
+        },
+        "title": {
+          "type": "object",
+          "properties": {
+            "ru": { "type": "string" },
+            "en": { "type": "string" }
+          },
+          "required": ["ru", "en"]
+        },
+        "bio": {
+          "type": "object",
+          "properties": {
+            "ru": { "type": "string" },
+            "en": { "type": "string" }
+          },
+          "required": ["ru", "en"]
+        }
+      },
+      "required": ["name", "title", "bio"]
+    }
+  }
+}

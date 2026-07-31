@@ -1,0 +1,6 @@
+{
+  "name": "Danis | Portfolio",
+  "description": "Single-page personal portfolio web app with dark luxury theme, admin mode, bilingual support (RU/EN), sorting, custom reordering, and real-time Firebase cloud persistence.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

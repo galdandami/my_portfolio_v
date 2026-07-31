@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /achievements/{achievementId} {
+      allow read, write: if true;
+    }
+    match /profile/{profileId} {
+      allow read, write: if true;
+    }
+  }
+}

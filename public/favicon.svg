@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="dGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F0FF" />
+      <stop offset="100%" stop-color="#0080FF" />
+    </linearGradient>
+  </defs>
+
+  <!-- Clean dark background with subtle rounded corners -->
+  <rect width="512" height="512" rx="128" fill="#0D0E12" />
+
+  <!-- Minimalist Monogram 'D' -->
+  <path 
+    d="M 160 128 H 250 C 330 128 384 180 384 256 C 384 332 330 384 250 384 H 160 Z" 
+    fill="none" 
+    stroke="url(#dGrad)" 
+    stroke-width="44" 
+    stroke-linecap="round" 
+    stroke-linejoin="round" 
+  />
+</svg>

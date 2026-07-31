@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #0B0B0C;
+    color: #FFFFFF;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-syne {
+    font-family: 'Syne', 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+/* Custom Font Utilities for Name Typography */
+.font-outfit { font-family: 'Outfit', sans-serif; }
+.font-playfair { font-family: 'Playfair Display', serif; }
+.font-space-grotesk { font-family: 'Space Grotesk', sans-serif; }
+.font-cinzel { font-family: 'Cinzel', serif; }
+.font-unbounded { font-family: 'Unbounded', sans-serif; }
+.font-cormorant { font-family: 'Cormorant Garamond', serif; }
+.font-syne { font-family: 'Syne', sans-serif; }
+
+/* Immersive UI Theme Utilities */
+.bg-wave {
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 80% 20%, rgba(0, 210, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(0, 163, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 50% 0%, rgba(0, 210, 255, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+}
+
+.neon-border {
+  border: 1px solid #00D2FF !important;
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.25);
+}
+
+.neon-border-hover:hover {
+  border: 1px solid #00D2FF !important;
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.35);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0B0B0C;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00D2FF;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-8px) scale(1.01); }
+}
+
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
