@@ -345,8 +345,6 @@ export default function App() {
       <Header
         lang={lang}
         onLanguageChange={handleLanguageChange}
-        isAdmin={isAdmin}
-        onToggleAdmin={handleToggleAdmin}
       />
 
       {/* Main Container */}
