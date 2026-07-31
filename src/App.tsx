@@ -10,7 +10,7 @@ import { AchievementDetailModal } from './components/AchievementDetailModal';
 import { AchievementFormModal } from './components/AchievementFormModal';
 import { ProfileEditModal } from './components/ProfileEditModal';
 import { EmptyState } from './components/EmptyState';
-import { Sparkles, ArrowUp, RefreshCw, ShieldAlert, Shield, ShieldCheck } from 'lucide-react';
+import { Sparkles, ArrowUp, RefreshCw, ShieldAlert } from 'lucide-react';
 import {
   subscribeToAchievements,
   subscribeToProfile,
@@ -432,24 +432,6 @@ export default function App() {
               ? 'Создано на React & Tailwind CSS • Все права защищены'
               : 'Built with React & Tailwind CSS • All rights reserved'}
           </p>
-
-          <button
-            onClick={() => setIsAdmin(!isAdmin)}
-            className="text-[11px] text-white/20 hover:text-white/60 transition-colors flex items-center gap-1.5 py-1 px-2.5 rounded-lg hover:bg-white/5"
-            title={isAdmin ? (lang === 'ru' ? 'Выйти из режима админа' : 'Exit Admin') : (lang === 'ru' ? 'Вход для администратора' : 'Admin Login')}
-          >
-            {isAdmin ? (
-              <>
-                <ShieldCheck className="w-3.5 h-3.5 text-amber-400/80" />
-                <span className="text-amber-400/80 font-medium">{lang === 'ru' ? 'Админ активен' : 'Admin Active'}</span>
-              </>
-            ) : (
-              <>
-                <Shield className="w-3.5 h-3.5 text-white/20" />
-                <span>{lang === 'ru' ? 'Админ' : 'Admin'}</span>
-              </>
-            )}
-          </button>
         </div>
       </footer>
 
